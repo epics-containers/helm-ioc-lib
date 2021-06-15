@@ -1,0 +1,9 @@
+{{- define "ioc-chart.ioc" -}}
+
+{{- include "ioc-chart.volume" . -}}
+---
+{{- include "ioc-chart.deployment" . -}}
+---
+{{- include "ioc-chart.configmap" . -}}
+
+{{- end -}}
