@@ -53,6 +53,9 @@ spec:
         tty: true
         resources:
           limits:
+            memory: {{ .Values.memory | default "512Mi" | quote }}
+            cpu: {{ .Values.cpu | default "1" | quote }}
+          requests:
             memory: "512Mi"
             cpu: "1"
         imagePullPolicy: Always
@@ -63,5 +66,22 @@ spec:
           value: {{ .Chart.Name }}
         - name: IOC_VERSION
           value: {{ .Chart.AppVersion }}
+      {{- if .Values.useAffinity }}
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: beamline
+                operator: In
+                values:
+                  - {{ .Values.beamline }}
+      {{- end }}
+      tolerations:
+        - key: nodetype
+          operator: Equal
+          value: {{ .Values.beamline }}
+          effect: NoSchedule
+
 
 {{ end }}
