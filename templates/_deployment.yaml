@@ -29,9 +29,11 @@ spec:
       hostNetwork: true
       terminationGracePeriodSeconds: 5 # nice to have quick restarts on IOCs
       volumes:
+        {{- if .Values.autosave -}}
         - name: {{ .Chart.Name }}
           persistentVolumeClaim:
             claimName: {{ .Chart.Name }}
+        {{- end }}
         - name: config-volume
           configMap:
             name: {{ .Chart.Name }}
@@ -47,8 +49,10 @@ spec:
         volumeMounts:
         - name: config-volume
           mountPath: {{ .Values.iocFolder }}/config
+        {{- if .Values.autosave -}}
         - name: {{ .Chart.Name }}
           mountPath: /autosave
+        {{- end }}
         stdin: true
         tty: true
         resources:

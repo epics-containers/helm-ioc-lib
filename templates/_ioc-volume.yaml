@@ -1,5 +1,6 @@
 {{- define "ioc-chart.volume" -}}
 
+{{- if .Values.autosave -}}
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
@@ -14,5 +15,5 @@ spec:
   resources:
     requests:
       storage: 10Mi
-
+{{- end }}
 {{ end }}
