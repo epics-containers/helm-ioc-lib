@@ -8,7 +8,7 @@ metadata:
   labels:
     app: {{ .Chart.Name }}
     beamline: {{ .Values.beamline }}
-    ioc_version: {{ .Chart.AppVersion }}
+    ioc_version: {{ .Chart.AppVersion | quote }}
     is_ioc: "True"
   annotations:
     kubernetes.io/change-cause: {{ .Chart.AppVersion }} deployed
@@ -22,7 +22,7 @@ spec:
       labels:
         app: {{ .Chart.Name }}
         beamline: {{ .Values.beamline }}
-        ioc_version: {{ .Chart.AppVersion }}
+        ioc_version: {{ .Chart.AppVersion | quote }}
         is_ioc: "True"
     spec:
       serviceAccountName: epics-iocs-priv
@@ -69,7 +69,7 @@ spec:
         - name: IOC_NAME
           value: {{ .Chart.Name }}
         - name: IOC_VERSION
-          value: {{ .Chart.AppVersion }}
+          value: {{ .Chart.AppVersion | quote }}
       {{- if .Values.useAffinity }}
       affinity:
         nodeAffinity:

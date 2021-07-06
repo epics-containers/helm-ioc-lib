@@ -8,7 +8,7 @@ metadata:
   labels:
     app: {{ .Release.Name }}
     beamline: {{ .Values.beamline }}
-    ioc_version: {{ .Chart.AppVersion }}
+    ioc_version: {{ .Chart.AppVersion | quote }}
     is_ioc: "True"
 data:
 
