@@ -1,9 +1,13 @@
-{{- define "ioc-chart.ioc" -}}
+{{- define "ioc-chart.ioc" }}
 
-{{- include "ioc-chart.volume" . -}}
+{{  include "ioc-chart.volume" . }}
 ---
-{{- include "ioc-chart.deployment" . -}}
+{{  include "ioc-chart.deployment" . }}
+{{- if .Values.addService }}
 ---
-{{- include "ioc-chart.configmap" . -}}
+{{ include "ioc-chart.service" . }}
+{{- end }}
+---
+{{  include "ioc-chart.configmap" . }}
 
-{{- end -}}
+{{- end }}

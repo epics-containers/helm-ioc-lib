@@ -1,6 +1,7 @@
 {{- define "ioc-chart.volume" -}}
 
-{{- if .Values.autosave -}}
+{{- if .Values.autosave }}
+---
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
@@ -16,4 +17,23 @@ spec:
     requests:
       storage: 10Mi
 {{- end }}
+
+{{- if .Values.dataVolume }}
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ .Chart.Name }}-data
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ .Chart.Name }}
+    beamline: {{ .Values.beamline }}
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1000Mi
+{{- end }}
+
 {{ end }}
