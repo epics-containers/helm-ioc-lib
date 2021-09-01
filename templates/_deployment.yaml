@@ -33,7 +33,7 @@ spec:
       {{- end }}
       terminationGracePeriodSeconds: 5 # nice to have quick restarts on IOCs
       volumes:
-        {{- if .Values.autosave }}
+        {{if .Values.autosave }}
         - name: {{ .Chart.Name }}
           persistentVolumeClaim:
             claimName: {{ .Chart.Name }}
@@ -58,7 +58,7 @@ spec:
         volumeMounts:
         - name: config-volume
           mountPath: {{ .Values.iocFolder }}/config
-        {{- if .Values.autosave }}
+        {{if .Values.autosave }}
         - name: {{ .Chart.Name }}
           mountPath: /autosave
         {{- end }}
