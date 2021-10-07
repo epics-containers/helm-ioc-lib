@@ -29,7 +29,7 @@ spec:
       serviceAccountName: {{ .Values.serviceAccount | default "epics-iocs-priv" | quote }}
       {{- end }}
       {{- if .Values.hostNetwork }}
-      hostNetwork: true
+      hostNetwork: {{ .Values.hostNetwork }}
       {{- end }}
       terminationGracePeriodSeconds: 5 # nice to have quick restarts on IOCs
       volumes:
