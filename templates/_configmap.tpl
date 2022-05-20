@@ -3,10 +3,10 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name:  {{ .Release.Name }}
-  namespace: {{ .Release.Namespace }}
+  name:  {{ .Chart.Name }}
+  namespace: {{ .Values.namespace }}
   labels:
-    app: {{ .Release.Name }}
+    app: {{ .Chart.Name }}
     beamline: {{ .Values.beamline }}
     ioc_version: {{ .Chart.AppVersion | quote }}
     is_ioc: "True"
