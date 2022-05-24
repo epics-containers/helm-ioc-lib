@@ -21,8 +21,9 @@ exports:
     # set this to your namespace service account
     serviceAccount: epics-iocs-priv
 
+    # provide some reasonable defaults here but allow override
     securityContext:
-      {}
+      allowPrivilegeEscalation: false
       # capabilities:
       #   drop:
       #   - ALL

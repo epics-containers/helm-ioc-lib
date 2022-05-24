@@ -44,8 +44,6 @@ spec:
             name: {{ .Chart.Name }}
       containers:
       - name: {{ .Chart.Name }}
-        securityContext:
-          allowPrivilegeEscalation: false
         image: {{ .Values.base_image }}
         command:
           - bash
