@@ -1,4 +1,4 @@
-name:  Build and publish a beamline's ioc helm charts
+name: Build and publish a beamline's ioc helm charts
 
 on:
   push:
@@ -25,24 +25,23 @@ jobs:
         run: |
           echo ${{ secrets.GITHUB_TOKEN }} | helm registry login ghcr.io/${{ github.repository_owner }} --username ${{ github.repository_owner }} --password-stdin
 
-          # only publish if this is a tagged releasse
-          if [[ ${GITHUB_REF} = refs/tags/* ]] ; then
+          REGISTRY=oci://ghcr.io/epics-containers
 
-            TAG=${GITHUB_REF#refs/tags/}
-
-            # Update all chart dependencies.
-            helm dependency update .
-
-            # update the helm chart versions with the tag
-            sed -e "s/^version: .*$/version: ${TAG}/g" -e "s/^appVersion: .*$/appVersion: ${TAG}/g" -i Chart.yaml
-
-            for THIS_TAG in latest ${TAG}
-            do
-                URL="ghcr.io/${{github.repository}}:${THIS_TAG}"
-                echo saving chart to "${URL}" ...
-                helm chart save . "${URL}"
-                echo push to "${URL}" ...
-                helm chart push "${URL}"
-            done
-
+          # helm tags must be SemVar. Use 0.0.0-b0 for testing the latest not tagged build
+          if [ "${GITHUB_REF_TYPE}" == "tag" ] ; then
+            TAG=${GITHUB_REF_NAME}
+          else
+            TAG="1.0.0-b0"
           fi
+          NAME=$(awk '/name:/{print $NF}' Chart.yaml)
+
+          # update the helm chart versions with the tag
+          echo updating Chart version to ${TAG}
+          sed -e "s/^version: .*$/version: ${TAG}/g" -e "s/^appVersion: .*$/appVersion: ${TAG}/g" -i Chart.yaml
+
+          # Update all chart dependencies.
+          helm dependency update .
+          helm package .
+          package=${NAME}-${TAG}.tgz
+
+          helm push "$package" $REGISTRY

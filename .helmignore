@@ -21,3 +21,8 @@
 .idea/
 *.tmproj
 .vscode/
+
+# from this project
+ghcr-deploy.sh
+*.tgz
+.github
