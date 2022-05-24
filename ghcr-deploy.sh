@@ -5,8 +5,6 @@
 # run from this directory
 # REQUIRED: env CR_PAT must contain a valid GITHUB_TOKEN with needed permissions
 #
-export HELM_EXPERIMENTAL_OCI=1
-
 IOC_CHART=ghcr.io/epics-containers/helm-ioc-lib
 VERSION=$(awk '/appVersion/{print $NF}' Chart.yaml)
 

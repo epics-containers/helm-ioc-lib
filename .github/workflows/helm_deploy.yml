@@ -5,8 +5,7 @@ on:
   pull_request:
 
 env:
-  HELM_EXPERIMENTAL_OCI: 1 #enable OCI support
-  HELM_VERSION_TO_INSTALL: 3.5.0 # version of HELM to install
+  HELM_VERSION_TO_INSTALL: 3.8.2 # version of HELM to install
 
 jobs:
   build-and-push-helm-charts:
