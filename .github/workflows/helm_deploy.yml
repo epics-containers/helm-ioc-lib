@@ -27,21 +27,15 @@ jobs:
 
           REGISTRY=oci://ghcr.io/epics-containers
 
-          # helm tags must be SemVar. Use 0.0.0-b0 for testing the latest not tagged build
+          # helm tags must be SemVar. Use 0.0.0-b0 for testing the latest non-tagged build
           if [ "${GITHUB_REF_TYPE}" == "tag" ] ; then
             TAG=${GITHUB_REF_NAME}
           else
             TAG="0.0.0-b0"
           fi
-          NAME=$(awk '/name:/{print $NF}' Chart.yaml)
+          NAME=$(sed -n '/^name: */s///p' Chart.yaml)
 
-          # update the helm chart versions with the tag
-          echo updating Chart version to ${TAG}
-          sed -e "s/^version: .*$/version: ${TAG}/g" -e "s/^appVersion: .*$/appVersion: ${TAG}/g" -i Chart.yaml
+          helm package -u --app-version ${TAG} --version ${TAG} .
+          PACKAGE=${NAME}-${TAG}.tgz
 
-          # Update all chart dependencies.
-          helm dependency update .
-          helm package .
-          package=${NAME}-${TAG}.tgz
-
-          helm push "$package" $REGISTRY
+          helm push "$PACKAGE" $REGISTRY
