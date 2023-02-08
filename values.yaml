@@ -15,8 +15,12 @@ exports:
     # provide a PVC for autosave mounted at /autosave
     autosave: false
 
-    # a PVC to mount at /data if needed
+    # Somewhere to mount at /data if needed
     dataVolume:
+      # A PVC to write data into
+      pvc: false
+      # A path on the host machine to write data into, ignored if dataVolume.pvc is true
+      hostPath: ""
 
     # set this to your namespace service account
     serviceAccount: epics-iocs-priv
