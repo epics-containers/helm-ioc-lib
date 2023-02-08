@@ -34,10 +34,15 @@ spec:
           persistentVolumeClaim:
             claimName: {{ .Chart.Name }}
         {{- end }}
-        {{- if .Values.dataVolume }}
+        {{- if .Values.dataVolume.pvc }}
         - name: {{ .Chart.Name }}-data
           persistentVolumeClaim:
             claimName: {{ .Chart.Name }}-data
+        {{- else if .Values.dataVolume.hostPath }}
+        - name: {{ .Chart.Name }}-data
+          hostPath:
+            path: {{ .Values.dataVolume.hostPath }}
+            type: Directory
         {{- end }}
         - name: config-volume
           configMap:
@@ -56,9 +61,12 @@ spec:
         - name: {{ .Chart.Name }}
           mountPath: /autosave
         {{- end }}
-        {{- if .Values.dataVolume }}
+        {{- if or (.Values.dataVolume.pvc) (.Values.dataVolume.hostPath)  }}
         - name: {{ .Chart.Name }}-data
           mountPath: /data
+          {{- if .Values.dataVolume.hostPath }}
+          mountPropagation: HostToContainer
+          {{- end}}
         {{- end }}
         stdin: true
         tty: true
