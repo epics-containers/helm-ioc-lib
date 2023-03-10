@@ -29,7 +29,12 @@ spec:
       hostNetwork: {{ .Values.hostNetwork }}
       terminationGracePeriodSeconds: 5 # nice to have quick restarts on IOCs
       volumes:
-        {{if .Values.autosave }}
+        {{- if .Values.nfsv2TftpClaim }}
+        - name: nfsv2-tftp-volume
+          persistentVolumeClaim:
+            claimName: {{ .Values.nfsv2TftpClaim }}
+        {{- end }}
+        {{- if .Values.autosave }}
         - name: {{ .Chart.Name }}
           persistentVolumeClaim:
             claimName: {{ .Chart.Name }}
@@ -57,7 +62,7 @@ spec:
         volumeMounts:
         - name: config-volume
           mountPath: {{ .Values.iocFolder }}/config
-        {{if .Values.autosave }}
+        {{- if .Values.autosave }}
         - name: {{ .Chart.Name }}
           mountPath: /autosave
         {{- end }}
@@ -68,11 +73,15 @@ spec:
           mountPropagation: HostToContainer
           {{- end}}
         {{- end }}
+        {{ if .nfsv2TftpClaim }}
+        - name: nfsv2-tftp-volume
+          mountPath: /tftp_nfsv2
+        {{- end -}}
         stdin: true
         tty: true
         securityContext:
 {{  toYaml .Values.securityContext | indent 10}}
-        resources: 
+        resources:
 {{  toYaml .Values.resources | indent 10}}
         imagePullPolicy: Always
         env:
@@ -82,6 +91,14 @@ spec:
           value: {{ .Chart.Name }}
         - name: IOC_VERSION
           value: {{ .Chart.AppVersion | quote }}
+        {{- range $envVar := .Values.env }}
+        - name: {{ $envVar.name }}
+          value: {{ $envVar.value | quote }}
+        {{- end }}
+        {{- range $envVar := .Values.globalenv }}
+        - name: {{ $envVar.name }}
+          value: {{ $envVar.value | quote }}
+        {{- end }}
       {{- if .Values.useAffinity }}
       affinity:
         nodeAffinity:
