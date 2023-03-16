@@ -73,10 +73,11 @@ spec:
           mountPropagation: HostToContainer
           {{- end}}
         {{- end }}
-        {{ if .nfsv2TftpClaim }}
+        {{- if .Values.nfsv2TftpClaim }}
         - name: nfsv2-tftp-volume
-          mountPath: /tftp_nfsv2
-        {{- end -}}
+          mountPath: /nfsv2-tftp
+          subPath: "{{ .Values.beamline }}/{{ .Chart.Name }}"
+          {{- end }}
         stdin: true
         tty: true
         securityContext:
