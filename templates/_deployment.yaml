@@ -27,7 +27,7 @@ spec:
     spec:
       serviceAccountName: {{ .Values.serviceAccount | default "epics-iocs-priv" | quote }}
       hostNetwork: {{ .Values.hostNetwork }}
-      terminationGracePeriodSeconds: 5 # nice to have quick restarts on IOCs
+      terminationGracePeriodSeconds: 15 # nice to have quick restarts on IOCs
       volumes:
         {{- if .Values.nfsv2TftpClaim }}
         - name: nfsv2-tftp-volume
@@ -58,7 +58,19 @@ spec:
         command:
           - bash
         args:
-          - {{ .Values.iocFolder }}/config/start.sh
+          - {{ .Values.iocFolder }}/start.sh
+        livenessProbe:
+          exec:
+            command:
+            - /bin/bash
+            - /repos/epics/ioc/liveness.sh
+          initialDelaySeconds: 120
+          periodSeconds: 10
+        lifecycle:
+          preStop:
+            exec:
+              # TODO move this up into ioc folder (in ioc-template itself)
+              command: ["bash", "-c", "/repos/epics/ioc/stop.sh"]
         volumeMounts:
         - name: config-volume
           mountPath: {{ .Values.iocFolder }}/config
