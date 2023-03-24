@@ -5,6 +5,10 @@ exports:
   defaults:
     beamline: no-beamline! (always override this)
 
+    # set this to your enforce namespace service account
+    # leave blank for default service account
+    # serviceAccountName: epics-iocs-priv
+
     # to support channel access and other protocols we need to run in host's network
     hostNetwork: true
 
@@ -20,10 +24,6 @@ exports:
       pvc: false
       # A path on the host machine to write data into, ignored if dataVolume.pvc is true
       hostPath: ""
-
-    # set this to your enforce namespace service account
-    # leave blank for default service account
-    # serviceAccount: epics-iocs-priv
 
     # provide some reasonable defaults here but allow override
     securityContext:
