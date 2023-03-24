@@ -11,7 +11,7 @@ metadata:
     beamline: {{ .Values.beamline }}
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   resources:
     requests:
       storage: 10Mi

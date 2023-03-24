@@ -25,7 +25,7 @@ spec:
         is_ioc: "True"
     spec:
       {{ if .Values.serviceAccountName }}
-      serviceAccountName: {{ .Values.serviceAccount | default "epics-iocs-priv" | quote }}
+      serviceAccountName: {{ .Values.serviceAccountName | quote }}
       {{- end }}
       hostNetwork: {{ .Values.hostNetwork }}
       terminationGracePeriodSeconds: 15 # nice to have quick restarts on IOCs
