@@ -4,7 +4,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Chart.Name }}
-  namespace: {{ .Values.namespace }}
   labels:
     app: {{ .Chart.Name }}
     beamline: {{ .Values.beamline }}
@@ -25,7 +24,9 @@ spec:
         ioc_version: {{ .Chart.AppVersion | quote }}
         is_ioc: "True"
     spec:
+      {{ if .Values.serviceAccountName }}
       serviceAccountName: {{ .Values.serviceAccount | default "epics-iocs-priv" | quote }}
+      {{- end }}
       hostNetwork: {{ .Values.hostNetwork }}
       terminationGracePeriodSeconds: 5 # nice to have quick restarts on IOCs
       volumes:

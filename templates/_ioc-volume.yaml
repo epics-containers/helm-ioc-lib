@@ -6,7 +6,6 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: {{ .Chart.Name }}
-  namespace: {{ .Values.namespace }}
   labels:
     app: {{ .Chart.Name }}
     beamline: {{ .Values.beamline }}
@@ -24,7 +23,6 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: {{ .Chart.Name }}-data
-  namespace: {{ .Values.namespace }}
   labels:
     app: {{ .Chart.Name }}
     beamline: {{ .Values.beamline }}
