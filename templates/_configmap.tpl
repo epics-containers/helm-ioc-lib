@@ -4,7 +4,6 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name:  {{ .Chart.Name }}
-  namespace: {{ .Values.namespace }}
   labels:
     app: {{ .Chart.Name }}
     beamline: {{ .Values.beamline }}
