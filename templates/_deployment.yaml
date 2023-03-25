@@ -103,6 +103,8 @@ spec:
           value: "{{ .Chart.Name }} > "
         - name: IOC_NAME
           value: {{ .Chart.Name }}
+        - name: IOC_PREFIX
+          value: {{ or .Values.prefix .Chart.Name | quote }}
         - name: IOC_VERSION
           value: {{ .Chart.AppVersion | quote }}
         {{- range $envVar := .Values.env }}
