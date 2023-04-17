@@ -70,7 +70,6 @@ spec:
         lifecycle:
           preStop:
             exec:
-              # TODO move this up into ioc folder (in ioc-template itself)
               command: ["bash", "-c", "/repos/epics/ioc/stop.sh"]
         volumeMounts:
         - name: config-volume
