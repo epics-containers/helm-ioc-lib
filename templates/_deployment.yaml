@@ -64,14 +64,13 @@ spec:
           exec:
             command:
             - /bin/bash
-            - /repos/epics/ioc/liveness.sh
+            - /epics/ioc/liveness.sh
           initialDelaySeconds: 120
           periodSeconds: 10
         lifecycle:
           preStop:
             exec:
-              # TODO move this up into ioc folder (in ioc-template itself)
-              command: ["bash", "-c", "/repos/epics/ioc/stop.sh"]
+              command: ["bash", "-c", "/epics/ioc/stop.sh"]
         volumeMounts:
         - name: config-volume
           mountPath: {{ .Values.iocFolder }}/config

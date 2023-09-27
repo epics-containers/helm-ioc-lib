@@ -13,7 +13,7 @@ exports:
     hostNetwork: true
 
     # root folder for ioc source/binaries - not expected to change
-    iocFolder: /repos/epics/ioc
+    iocFolder: /epics/ioc
 
     # provide a PVC for autosave mounted at /autosave
     autosave: false
